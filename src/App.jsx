@@ -2,12 +2,11 @@ import { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Banner from './components/Banner';
-import CourseList from './components/CourseList';
+import TermPage from './components/CourseList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useJsonQuery } from './utilities/fetch';
-
 const queryClient = new QueryClient();
 
 const Main = () => {
@@ -19,7 +18,7 @@ const Main = () => {
 
   return  <div className="container">
             <Banner title={schedule.title}/>
-            <CourseList courses = {schedule.courses}/>
+            <TermPage courses = {schedule.courses} term = {TermPage}/>
           </div>;
 }
 
