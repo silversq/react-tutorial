@@ -46,3 +46,8 @@ button {
   display: grid;
   grid-template-columns: repeat(auto-fill, 14rem);
 }
+
+.card .selected {
+  background-color:lemonchiffon;
+  color: green;
+}

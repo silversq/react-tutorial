@@ -31,18 +31,41 @@ const Term = ({selection}) => (
   </div>
 );
 
-const TermPage = ({courses, term}) => {
+const TermPage = ({courses}) => {
   const [selection, setSelection] = useState(() => Object.keys(terms)[0]);
+  const [selected, setSelected] = useState([]);
+  const toggleSelected = (course) => setSelected(
+    selected.includes(course) 
+    ? selected.filter(x => x !== course)
+    : [...selected, course]
+  );
+  
   return (
     <div>
       <TermSelector selection={selection} setSelection={setSelection} />
       <div className="course-list">
         {
-          Object.entries(courses).filter(course => course[1].term === selection).map(([name, course]) => <Course course={course} key={name}/>)
+          Object.entries(courses).filter(course => course[1].term === selection).map(([name, course]) => 
+            <Course course={course} key={name} id = {name} selected={selected} toggleSelected={toggleSelected} />)
         };
       </div>
     </div>
   );
 }
+
+// const ProductPage = ({products}) => {
+//   const [selected, setSelected] = useState([]);
+
+//   const toggleSelected = (item) => setSelected(
+//     selected.includes(item)
+//     ? selected.filter(x => x !== item)
+//     : [...selected, item]
+//   );
+
+//   return (
+//     <ProductList products={products} selected={selected} toggleSelected={toggleSelected} />
+//   );
+// };
+
 
 export default TermPage;
