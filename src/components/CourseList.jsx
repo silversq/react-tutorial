@@ -1,6 +1,7 @@
 import Course from './Course';
 import { useState } from "react";
-
+import Modal from './Modal';
+import CoursePlan from './CoursePlan';
 const terms = {
   Fall: 'Fall', 
   Winter: 'Winter',
@@ -25,12 +26,6 @@ const TermSelector = ({selection, setSelection}) => (
   </div>
 );
 
-const Term = ({selection}) => (
-  <div className="card" >
-  { terms[selection] }
-  </div>
-);
-
 const TermPage = ({courses}) => {
   const [selection, setSelection] = useState(() => Object.keys(terms)[0]);
   const [selected, setSelected] = useState([]);
@@ -39,16 +34,24 @@ const TermPage = ({courses}) => {
     ? selected.filter(x => x !== course)
     : [...selected, course]
   );
-  
+  const [open, setOpen] = useState(false);
+  const openModal = () => setOpen(true);
+  const closeModal = () => setOpen(false);
   return (
     <div>
-      <TermSelector selection={selection} setSelection={setSelection} />
+      <div className="d-flex justify-content-between">
+        <TermSelector selection={selection} setSelection={setSelection} />
+        <button className="ms-auto btn btn-primary" onClick={openModal}>Course Selection</button>
+      </div>
       <div className="course-list">
         {
           Object.entries(courses).filter(course => course[1].term === selection).map(([name, course]) => 
             <Course course={course} key={name} id = {name} selected={selected} toggleSelected={toggleSelected} />)
         };
       </div>
+      <Modal open={open} close={closeModal}>
+        <CoursePlan courses={Object.entries(courses).filter(([id, course]) => selected.includes(id))} />
+      </Modal>
     </div>
   );
 }
