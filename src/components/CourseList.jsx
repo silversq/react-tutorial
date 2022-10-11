@@ -2,6 +2,7 @@ import Course from './Course';
 import { useState } from "react";
 import Modal from './Modal';
 import CoursePlan from './CoursePlan';
+import { timeConflict } from '../utilities/conflict';
 const terms = {
   Fall: 'Fall', 
   Winter: 'Winter',
@@ -29,11 +30,19 @@ const TermSelector = ({selection, setSelection}) => (
 const TermPage = ({courses}) => {
   const [selection, setSelection] = useState(() => Object.keys(terms)[0]);
   const [selected, setSelected] = useState([]);
-  const toggleSelected = (course) => setSelected(
+  const toggleSelected = (course) => {
+    setSelected(
     selected.includes(course) 
-    ? selected.filter(x => x !== course)
-    : [...selected, course]
-  );
+    ? selected.filter(x => x !== course) 
+    : selectedConflict(course) ? selected
+    : [...selected, course] 
+  )};
+
+  const selectedConflict = (course) => {
+    // console.log(selected.filter(selectedCourse => timeConflict(course, selectedCourse)));
+    // console.log(selected);
+    return selected.filter(selectedCourse => timeConflict(course, selectedCourse)).length > 0;
+  }
   const [open, setOpen] = useState(false);
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
@@ -46,11 +55,11 @@ const TermPage = ({courses}) => {
       <div className="course-list">
         {
           Object.entries(courses).filter(course => course[1].term === selection).map(([name, course]) => 
-            <Course course={course} key={name} id = {name} selected={selected} toggleSelected={toggleSelected} />)
+            <Course course={course} key={name} id = {course.title} selected={selected} toggleSelected={toggleSelected} conflicted={selectedConflict(course)}/>)
         };
       </div>
       <Modal open={open} close={closeModal}>
-        <CoursePlan courses={Object.entries(courses).filter(([id, course]) => selected.includes(id))} />
+        <CoursePlan courses={Object.entries(courses).filter(([id, course]) => selected.includes(course))} />
       </Modal>
     </div>
   );

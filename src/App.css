@@ -51,3 +51,8 @@ button {
   background-color:lemonchiffon;
   color: green;
 }
+
+.card .conflicted {
+  background-color:lemonchiffon;
+  color: red;
+}

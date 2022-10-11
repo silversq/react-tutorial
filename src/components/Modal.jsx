@@ -1,4 +1,4 @@
-import "./CSS/Modal.css";
+import "./Modal.css";
 // https://codebuckets.com/2021/08/08/bootstrap-modal-dialog-in-react-without-jquery/
 
 const Modal = ({ children, open, close }) => (
