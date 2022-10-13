@@ -7,7 +7,15 @@ import Banner from './components/Banner';
 import TermPage from './components/CourseList';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useJsonQuery } from './utilities/fetch';
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
+import CourseForm from './components/CourseForm';
+
 const queryClient = new QueryClient();
+
+const CourseEditFormUrl = ({courses}) => {
+  const {id} = useParams();
+  return <CourseForm courses={courses} id={id} />;  
+}
 
 const Main = () => {
   const [schedule, isLoading, error] = useJsonQuery('https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php');
@@ -18,7 +26,12 @@ const Main = () => {
 
   return  <div className="container">
             <Banner title={schedule.title}/>
-            <TermPage courses = {schedule.courses} />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<TermPage courses={schedule.courses} />} />
+                <Route path="/course/:id/edit" element={<CourseEditFormUrl courses={schedule.courses} />}/>
+              </Routes>
+            </BrowserRouter>
           </div>;
 }
 
