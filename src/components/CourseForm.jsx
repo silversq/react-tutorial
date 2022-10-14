@@ -1,14 +1,15 @@
 import { useFormData } from '../utilities/useFormData';
 import { useNavigate } from 'react-router-dom';
-// const validateUserData = (key, val) => {
-//   switch (key) {
-//     case 'firstName': case 'lastName':
-//       return /(^\w\w)/.test(val) ? '' : 'must be least two characters';
-//     case 'email':
-//       return /^\w+@\w+[.]\w+/.test(val) ? '' : 'must contain name@domain.top-level-domain';
-//     default: return '';
-//   }
-// };
+const validateUserData = (key, val) => {
+  switch (key) {
+    case 'Title':
+      return /(^\w\w)/.test(val) ? '' : 'must be least two characters';
+    case 'Meeting Time':
+      return /^(M|Tu|W|Th|F)+ (([01]?[0-9]|2[0-3]):[0-5][0-9])-(([01]?[0-9]|2[0-3]):[0-5][0-9])$/.test(val) 
+                  ? '' : 'must contain days and a start end, e.g., MWF 12:00-13:20';
+    default: return '';
+  }
+};
 
 const InputField = ({name, text, state, change}) => (
   <div className="mb-3">
@@ -32,8 +33,7 @@ const ButtonBar = ({message, disabled}) => {
 
 const CourseForm = ({courses, id}) => {
 //   const [update, result] = useDbUpdate(`/users/${user.id}`);
-  const [state, change] = useFormData(courses[id]);
-  console.log(state);
+  const [state, change] = useFormData(validateUserData,courses[id]);
   const submit = (evt) => {
     evt.preventDefault();
     if (!state.errors) {
