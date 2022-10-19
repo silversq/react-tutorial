@@ -14,12 +14,11 @@ const queryClient = new QueryClient();
 
 const CourseEditFormUrl = ({courses}) => {
   const {id} = useParams();
-  return <CourseForm courses={courses} id={id} />;  
+  return <CourseForm courses={courses.courses} id={id} />;  
 }
 
 const Main = () => {
   const [schedule, error] = useDbData('/');
-
 
   if (error) return <h1>Error loading user data: {`${error}`}</h1>;
   if (schedule === undefined) return <h1>Loading data...</h1>;
@@ -29,7 +28,7 @@ const Main = () => {
             <Banner title={schedule.title}/>
             <BrowserRouter>
               <Routes>
-                <Route path="/" element={<TermPage courses={schedule.courses} />} />
+                <Route path="/" element={<TermPage courses={schedule.courses.courses} />} />
                 <Route path="/course/:id/edit" element={<CourseEditFormUrl courses={schedule.courses} />}/>
               </Routes>
             </BrowserRouter>

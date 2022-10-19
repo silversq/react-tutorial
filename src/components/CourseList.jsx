@@ -55,7 +55,7 @@ const TermPage = ({courses}) => {
       <div className="course-list">
         {
           Object.entries(courses).filter(course => course[1].term === selection).map(([name, course]) => 
-            <Course course={course} key={name} id = {course.title} selected={selected} toggleSelected={toggleSelected} conflicted={selectedConflict(course)}/>)
+            <Course course={course} key={name} id = {name} selected={selected} toggleSelected={toggleSelected} conflicted={selectedConflict(course)}/>)
         };
       </div>
       <Modal open={open} close={closeModal}>
