@@ -3,6 +3,24 @@ import { useState } from "react";
 import Modal from './Modal';
 import CoursePlan from './CoursePlan';
 import { timeConflict } from '../utilities/conflict';
+import { NavLink } from 'react-router-dom';
+import { signInWithGoogle, signOut, useAuthState } from '../utilities/firebase';
+
+const SignInButton = () => (
+  <button className="btn btn-dark" onClick={signInWithGoogle}>Sign in</button>
+);
+
+const SignOutButton = () => (
+  <button className="btn btn-dark" onClick={signOut}>Sign out</button>
+);
+
+const AuthButton = () => {
+  const [user] = useAuthState();
+  return user ? <SignOutButton /> : <SignInButton />;
+};
+
+const activation = ({isActive}) => isActive ? 'active' : 'inactive';
+
 const terms = {
   Fall: 'Fall', 
   Winter: 'Winter',
@@ -51,6 +69,7 @@ const TermPage = ({courses}) => {
       <div className="d-flex justify-content-between">
         <TermSelector selection={selection} setSelection={setSelection} />
         <button className="ms-auto btn btn-primary" onClick={openModal}>Course Selection</button>
+        <AuthButton />
       </div>
       <div className="course-list">
         {
