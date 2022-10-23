@@ -45,7 +45,7 @@ const TermSelector = ({selection, setSelection}) => (
   </div>
 );
 
-const TermPage = ({courses}) => {
+const TermPage = ({courses, profile}) => {
   const [selection, setSelection] = useState(() => Object.keys(terms)[0]);
   const [selected, setSelected] = useState([]);
   const toggleSelected = (course) => {
@@ -56,6 +56,7 @@ const TermPage = ({courses}) => {
     : [...selected, course] 
   )};
 
+  console.log(profile?.isAdmin);
   const selectedConflict = (course) => {
     // console.log(selected.filter(selectedCourse => timeConflict(course, selectedCourse)));
     // console.log(selected);
@@ -74,7 +75,8 @@ const TermPage = ({courses}) => {
       <div className="course-list">
         {
           Object.entries(courses).filter(course => course[1].term === selection).map(([name, course]) => 
-            <Course course={course} key={name} id = {name} selected={selected} toggleSelected={toggleSelected} conflicted={selectedConflict(course)}/>)
+            <Course course={course} key={name} id = {name} selected={selected} 
+            toggleSelected={toggleSelected} profile = {profile} conflicted={selectedConflict(course)}/>)
         };
       </div>
       <Modal open={open} close={closeModal}>
